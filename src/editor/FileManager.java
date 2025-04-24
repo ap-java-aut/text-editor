@@ -58,6 +58,7 @@ public class FileManager {
     }
 
     public static void newFile(TextEditor textEditor, JTextArea textArea) {
-        //TODO
-    }
+        textArea.setText("");
+        textEditor.currentFile = null;
+        textEditor.setTitle("Simple Text Editor");    }
 }

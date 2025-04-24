@@ -1,10 +1,7 @@
 package editor;
 
 import javax.swing.*;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 public class FileManager {
     public static void openFile(TextEditor textEditor, JTextArea textArea) {
@@ -35,11 +32,28 @@ public class FileManager {
         if (textEditor.currentFile == null){
             JFileChooser fileChooser = new JFileChooser();
             if (fileChooser.showSaveDialog(textEditor) == JFileChooser.APPROVE_OPTION) {
-                //TODO
+                textEditor.currentFile = fileChooser.getSelectedFile();
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(textEditor.currentFile))) {
+                    writer.write(textArea.getText());
+                    textEditor.setTitle("Simple Text Editor - " + textEditor.currentFile.getName());
+                } catch (IOException e) {
+                    JOptionPane.showMessageDialog(textEditor,
+                            "Error saving file: " + e.getMessage(),
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
             }
         }
         else{
-            //TODO
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(textEditor.currentFile))) {
+                writer.write(textArea.getText());
+                textEditor.setTitle("Simple Text Editor - " + textEditor.currentFile.getName());
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(textEditor,
+                        "Error saving file: " + e.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
